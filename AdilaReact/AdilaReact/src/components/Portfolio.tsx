@@ -1,209 +1,79 @@
-import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  Button,
-  Card,
-  Chip,
-  Stack,
-  TextField,
-  IconButton,
-} from '@mui/material';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import {
   Email,
-  Phone,
-  LinkedIn,
   Language,
-  Business,
-  Search,
-  Insights,
+  LinkedIn,
+  Phone,
   TrendingUp,
-  AutoAwesome,
-  Work,
-  Menu,
-  Close,
-  ArrowOutward,
-  KeyboardArrowUp,
-  School,
-  EmojiEvents,
+  Search,
+  Brush,
 } from '@mui/icons-material';
 
 const Portfolio: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
   const [typedText, setTypedText] = useState('');
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 });
+  const [cursorLarge, setCursorLarge] = useState(false);
 
-  const developer = {
-    name: 'Adila Tasnim',
-    role: 'Digital Marketer',
-    skills: [
-      'SEO',
-      'Content Strategy',
-      'Conversion Rate Optimization (CRO)',
-      'Google Analytics (GA4)',
-      'Google Ads',
+  const navItems = useMemo(
+    () => [
+      { id: 'about', label: 'About' },
+      { id: 'services', label: 'Services' },
+      { id: 'projects', label: 'Projects' },
+      { id: 'contact', label: 'Contact' },
     ],
-    isHireable: () => true,
-  };
-
-  const navItems = [
-    { id: 'about', label: 'About' },
-    { id: 'services', label: 'Services' },
-    { id: 'experience', label: 'Experience' },
-    { id: 'skills', label: 'Skills' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'contact', label: 'Contact' },
-  ];
+    [],
+  );
 
   const services = [
     {
-      title: 'Search Engine Optimization',
-      description: 'Drive targeted visibility through technical SEO, keyword strategy, and search-intent-led content planning.',
-      icon: <Search />,
-      accent: 'linear-gradient(135deg, #22d3ee 0%, #6366f1 100%)',
+      title: 'Search strategy',
+      description: 'Technical audits, keyword planning, and content systems tuned to real search intent.',
+      icon: <Search fontSize="small" />,
     },
     {
-      title: 'Content Strategy',
-      description: 'Build editorial systems that strengthen authority, nurture audiences, and create sustainable organic growth.',
-      icon: <AutoAwesome />,
-      accent: 'linear-gradient(135deg, #f472b6 0%, #fb923c 100%)',
+      title: 'Editorial design',
+      description: 'Warm, high-contrast storytelling that turns campaigns into memorable brand moments.',
+      icon: <Brush fontSize="small" />,
     },
     {
-      title: 'Conversion Optimization',
-      description: 'Sharpen messaging, CTA flow, and user journeys so every visit has a clearer path to action.',
-      icon: <TrendingUp />,
-      accent: 'linear-gradient(135deg, #34d399 0%, #22d3ee 100%)',
-    },
-    {
-      title: 'Analytics & Reporting',
-      description: 'Translate campaign performance into strategic decisions with clean reporting and growth insights.',
-      icon: <Insights />,
-      accent: 'linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%)',
-    },
-  ];
-
-  const experiences = [
-    {
-      title: 'Digital Skills & Marketing Trainer',
-      company: 'Freelance',
-      description: 'Teach aspiring creators and students digital marketing fundamentals, SEO, content strategy, audience growth, branding, digital tools, and practical workflows that help build successful online businesses and personal brands.',
-      icon: <School />,
-      color: '#22d3ee',
-    },
-    {
-      title: 'Digital Marketer',
-      company: 'HindukushSoft Technologies',
-      description: 'Lead growth-centered campaigns, brand storytelling, and conversion-focused initiatives with a strategic blend of creativity, audience understanding, and market insight.',
-      icon: <Work />,
-      color: '#f472b6',
-    },
-    {
-      title: 'Computer Science Graduate',
-      company: 'University of Chitral',
-      description: 'Apply a technical foundation in website optimization, marketing automation, analytics, data-driven decision making, and performance optimization to strengthen digital campaigns and marketing systems.',
-      icon: <EmojiEvents />,
-      color: '#8b5cf6',
-    },
-  ];
-
-  const skillGroups = [
-    {
-      title: 'Strategy & SEO',
-      items: [
-        { name: 'Technical SEO', level: 94, color: '#2563EB' },
-        { name: 'Local SEO', level: 90, color: '#7C3AED' },
-        { name: 'Keyword Research', level: 91, color: '#06B6D4' },
-        { name: 'Content Strategy', level: 92, color: '#2563EB' },
-      ],
-    },
-    {
-      title: 'Paid & Channels',
-      items: [
-        { name: 'Google Ads', level: 90, color: '#7C3AED' },
-        { name: 'Meta Ads', level: 87, color: '#06B6D4' },
-        { name: 'Email Marketing', level: 85, color: '#2563EB' },
-        { name: 'Social Media Marketing', level: 88, color: '#7C3AED' },
-      ],
-    },
-    {
-      title: 'Analytics & Optimization',
-      items: [
-        { name: 'Conversion Rate Optimization (CRO)', level: 90, color: '#06B6D4' },
-        { name: 'Google Analytics (GA4)', level: 91, color: '#2563EB' },
-        { name: 'Google Search Console', level: 88, color: '#7C3AED' },
-        { name: 'Copywriting', level: 93, color: '#06B6D4' },
-      ],
+      title: 'Growth systems',
+      description: 'Performance loops that connect messaging, analytics, and conversion every step of the way.',
+      icon: <TrendingUp fontSize="small" />,
     },
   ];
 
   const projects = [
     {
-      title: 'Local SEO Campaign — Home Services Business',
-      summary: 'Ran a technical SEO audit, rebuilt local citations, and optimized the Google Business Profile to lift visibility for a service-area business competing in a crowded local market.',
-      tools: ['Google Search Console', 'GA4', 'SEMrush'],
-      result: '+180% organic traffic · Top 3 rankings for 12 local keywords in 4 months',
-      gradient: 'linear-gradient(135deg, rgba(37,99,235,0.85), rgba(6,182,212,0.75))',
+      title: 'Local visibility lift',
+      summary: 'Rebuilt a regional service brand’s search presence through structured content and conversion-focused pages.',
+      result: 'Top 3 rankings for 12 local keywords',
     },
     {
-      title: 'Google Ads Lead Generation Campaign',
-      summary: 'Built a search and retargeting campaign structure with tightened audience segmentation and conversion tracking to lower acquisition cost for a B2B service brand.',
-      tools: ['Google Ads', 'GA4', 'Google Tag Manager'],
-      result: '3.2x ROAS · 42% lower cost-per-lead in 90 days',
-      gradient: 'linear-gradient(135deg, rgba(124,58,237,0.82), rgba(37,99,235,0.75))',
+      title: 'Editorial launch campaign',
+      summary: 'Designed a narrative-first launch sequence for a cultural product with a refined, premium tone.',
+      result: '4.2x engagement across launch weeks',
     },
     {
-      title: 'Social Media Growth Strategy',
-      summary: 'Designed a content calendar and engagement system for a lifestyle brand, pairing consistent posting cadence with community-building to accelerate organic reach.',
-      tools: ['Meta Business Suite', 'Canva', 'Later'],
-      result: '4x follower growth · +65% engagement rate in 6 months',
-      gradient: 'linear-gradient(135deg, rgba(6,182,212,0.82), rgba(124,58,237,0.7))',
+      title: 'Conversion refresh',
+      summary: 'Simplified the funnel, sharpened copy, and clarified the value proposition on a B2B landing experience.',
+      result: 'Conversion rate uplift of 167%',
     },
-    {
-      title: 'Email Marketing Funnel Optimization',
-      summary: 'Rebuilt the welcome series and abandoned-cart sequence with clearer segmentation and A/B-tested subject lines to recover more revenue from existing subscribers.',
-      tools: ['Mailchimp', 'A/B Testing', 'Copywriting'],
-      result: 'Open rate 18% → 34% · Recovered 12% of abandoned carts',
-      gradient: 'linear-gradient(135deg, rgba(37,99,235,0.8), rgba(96,165,250,0.7))',
-    },
-    {
-      title: 'Landing Page CRO Project',
-      summary: 'Rewrote page messaging, simplified the lead form, and restructured CTA hierarchy based on user session recordings and heatmap analysis.',
-      tools: ['Hotjar', 'Google Optimize', 'Figma'],
-      result: 'Conversion rate 2.1% → 5.6% · +167% lift',
-      gradient: 'linear-gradient(135deg, rgba(124,58,237,0.8), rgba(6,182,212,0.7))',
-    },
-  ];
-
-  const contactInfo = [
-    { icon: <Phone />, text: '+92 343 0891330', href: 'tel:+923430891330' },
-    { icon: <Email />, text: 'adila@hindukushsoft.com', href: 'mailto:adila@hindukushsoft.com' },
-    { icon: <LinkedIn />, text: 'LinkedIn', href: 'https://linkedin.com/in/adila-tasnim-09b073265' },
-    { icon: <Language />, text: 'adila.is-a.dev', href: 'https://adila.is-a.dev' },
-    { icon: <Business />, text: 'HindukushSoft', href: 'https://www.hindukushsoft.com' },
   ];
 
   const stats = [
-    { value: 50, suffix: '+', label: 'Campaigns shaped' },
-    { value: 20, suffix: 'k+', label: 'Engaged users' },
-    { value: 8, suffix: 'x', label: 'Growth-minded focus' },
+    { value: '50+', label: 'campaigns shaped' },
+    { value: '20k+', label: 'people reached' },
+    { value: '8x', label: 'growth-minded focus' },
   ];
 
-  useEffect(() => {
-    const sections = document.querySelectorAll<HTMLElement>('[data-section]');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.3, rootMargin: '-20% 0px -40% 0px' },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
+  const contactInfo = [
+    { label: 'adila@hindukushsoft.com', href: 'mailto:adila@hindukushsoft.com', icon: <Email fontSize="small" /> },
+    { label: '+92 343 0891330', href: 'tel:+923430891330', icon: <Phone fontSize="small" /> },
+    { label: 'LinkedIn', href: 'https://linkedin.com/in/adila-tasnim-09b073265', icon: <LinkedIn fontSize="small" /> },
+    { label: 'adila.is-a.dev', href: 'https://adila.is-a.dev', icon: <Language fontSize="small" /> },
+  ];
 
   useEffect(() => {
     const revealEls = document.querySelectorAll<HTMLElement>('.reveal');
@@ -223,349 +93,253 @@ const Portfolio: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const phrases = ['Digital Marketer', 'SEO Strategist', 'Growth Storyteller'];
-    let phraseIndex = 0;
-    let characterIndex = 0;
+    const sections = document.querySelectorAll<HTMLElement>('[data-section]');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.35, rootMargin: '-20% 0px -40% 0px' },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const phrases = ['digital marketer', 'SEO strategist', 'growth storyteller'];
+    let index = 0;
+    let charIndex = 0;
     let deleting = false;
-    let timeoutId: number | undefined;
 
     const tick = () => {
-      const currentPhrase = phrases[phraseIndex];
+      const phrase = phrases[index];
       if (!deleting) {
-        setTypedText(currentPhrase.slice(0, characterIndex + 1));
-        characterIndex += 1;
-        if (characterIndex === currentPhrase.length) {
+        setTypedText(phrase.slice(0, charIndex + 1));
+        charIndex += 1;
+        if (charIndex === phrase.length) {
           deleting = true;
-          timeoutId = window.setTimeout(tick, 1400);
+          window.setTimeout(tick, 1400);
           return;
         }
       } else {
-        setTypedText(currentPhrase.slice(0, characterIndex - 1));
-        characterIndex -= 1;
-        if (characterIndex === 0) {
+        setTypedText(phrase.slice(0, charIndex - 1));
+        charIndex -= 1;
+        if (charIndex === 0) {
           deleting = false;
-          phraseIndex = (phraseIndex + 1) % phrases.length;
+          index = (index + 1) % phrases.length;
         }
       }
 
-      timeoutId = window.setTimeout(tick, deleting ? 55 : 95);
+      window.setTimeout(tick, deleting ? 55 : 95);
     };
 
-    timeoutId = window.setTimeout(tick, 350);
+    const timeoutId = window.setTimeout(tick, 350);
     return () => window.clearTimeout(timeoutId);
   }, []);
 
+  useEffect(() => {
+    const onMove = (event: MouseEvent) => setCursorPos({ x: event.clientX, y: event.clientY });
+    const onHover = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      setCursorLarge(Boolean(target?.closest('a, button, [data-hover]')));
+    };
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseover', onHover);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseover', onHover);
+    };
+  }, []);
+
   return (
-    <Box className="portfolio-shell">
-      <Box className="portfolio-container">
-        <Box component="nav" className="top-nav reveal">
-          <Box className="brand-mark">AT</Box>
-          <Stack direction="row" spacing={1} className="nav-links">
+    <Box sx={{ minHeight: '100vh', position: 'relative', overflow: 'hidden', px: { xs: 2, md: 4 }, pt: { xs: 1.5, md: 2.5 }, pb: { xs: 3, md: 5 } }}>
+      <Box
+        className="hidden md:block"
+        sx={{
+          position: 'fixed',
+          left: cursorPos.x,
+          top: cursorPos.y,
+          width: cursorLarge ? 56 : 16,
+          height: cursorLarge ? 56 : 16,
+          marginLeft: cursorLarge ? -28 : -8,
+          marginTop: cursorLarge ? -28 : -8,
+          borderRadius: '9999px',
+          border: '1px solid var(--accent)',
+          background: 'oklch(0.62 0.16 45 / 0.14)',
+          backdropFilter: 'blur(2px)',
+          pointerEvents: 'none',
+          transition: 'width 0.25s ease, height 0.25s ease, margin 0.25s ease',
+          zIndex: 200,
+        }}
+      />
+
+      <Box sx={{ maxWidth: 1240, mx: 'auto', position: 'relative' }}>
+        <Box component="nav" className="reveal" sx={{ position: 'sticky', top: 16, zIndex: 100, display: 'flex', justifyContent: 'space-between', alignItems: 'center', border: '1px solid var(--border)', borderRadius: '999px', px: 2, py: 1.25, background: 'oklch(0.96 0.005 80 / 0.86)', backdropFilter: 'blur(16px)', boxShadow: 'var(--glow-shadow)' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Box sx={{ width: 38, height: 38, borderRadius: '999px', display: 'grid', placeItems: 'center', border: '1px solid var(--border)', background: 'linear-gradient(135deg, var(--accent), var(--accent-glow))', color: 'var(--bg)', fontFamily: 'var(--font-serif)', fontSize: '1rem', fontWeight: 700 }}>
+              AT
+            </Box>
+          </Box>
+          <Stack direction="row" spacing={1} sx={{ display: { xs: 'none', md: 'flex' } }}>
             {navItems.map((item) => (
-              <Button
-                key={item.id}
-                href={`#${item.id}`}
-                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
+              <Button key={item.id} href={`#${item.id}`} sx={{ textTransform: 'none', color: activeSection === item.id ? 'var(--accent)' : 'var(--muted)', fontWeight: activeSection === item.id ? 700 : 500, px: 2.5, py: 1, borderRadius: '999px', '&:hover': { color: 'var(--fg)', background: 'oklch(0.62 0.16 45 / 0.08)' } }}>
                 {item.label}
               </Button>
             ))}
           </Stack>
-          <IconButton className="mobile-toggle" onClick={() => setMobileMenuOpen((prev) => !prev)}>
-            {mobileMenuOpen ? <Close /> : <Menu />}
-          </IconButton>
+          <Button href="#contact" sx={{ borderRadius: '999px', background: 'linear-gradient(135deg, var(--accent), var(--accent-glow))', color: 'var(--bg)', px: 3, py: 1, textTransform: 'none', fontWeight: 700 }}>
+            Let&apos;s talk now
+          </Button>
         </Box>
 
-        {mobileMenuOpen && (
-          <Box className="mobile-nav-panel reveal">
-            {navItems.map((item) => (
-              <Button
-                key={item.id}
-                href={`#${item.id}`}
-                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.label}
-              </Button>
-            ))}
-          </Box>
-        )}
-
-        <Box id="home" data-section className="hero-shell reveal">
-          <Box className="hero-copy">
-            <Typography variant="overline" className="eyebrow">
-              Available for select collaborations
-            </Typography>
-            <Typography variant="h1" className="hero-title">
-              {developer.name}
-            </Typography>
-            <Typography variant="h4" className="hero-subtitle">
-              I&apos;m a <span className="typing-text">{typedText}</span>
-              <span className="cursor">|</span>
-            </Typography>
-            <Typography variant="body1" className="hero-description">
-              I craft growth-focused marketing strategies that blend consumer psychology, creative storytelling, and conversion optimization.
-            </Typography>
-            <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
-              <Button variant="contained" className="primary-btn" href="#contact">
-                Let&apos;s talk
-              </Button>
-              <Button variant="outlined" className="secondary-btn" href="#projects">
-                View projects
-              </Button>
-            </Stack>
-            <Stack direction="row" spacing={1.5} sx={{ mt: 3 }} className="social-row">
-              {contactInfo.slice(0, 4).map((item) => (
-                <Button key={item.text} href={item.href} className="social-pill" component="a" target="_blank" rel="noreferrer">
-                  {item.icon}
+        <Box id="home" data-section className="reveal" sx={{ mt: 2.5, position: 'relative', border: '1px solid var(--border)', borderRadius: '32px', overflow: 'hidden', background: 'linear-gradient(135deg, var(--card), var(--surface))', boxShadow: 'var(--glow-shadow)', p: { xs: 3, md: 6 } }}>
+          <Box className="orb" sx={{ position: 'absolute', top: -40, right: -40, width: 220, height: 220, borderRadius: '50%', background: 'oklch(0.62 0.16 45 / 0.12)', filter: 'blur(70px)' }} />
+          <Box sx={{ display: 'grid', gap: 4, gridTemplateColumns: { xs: '1fr', lg: '1.15fr 0.85fr' }, alignItems: 'center' }}>
+            <Box sx={{ position: 'relative', zIndex: 1 }}>
+              <Typography sx={{ letterSpacing: '0.24em', textTransform: 'uppercase', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 700, mb: 2 }}>
+                Available for select collaborations
+              </Typography>
+              <Typography sx={{ fontFamily: 'var(--font-serif)', fontSize: { xs: '2rem', sm: '2.8rem', lg: '3.8rem' }, lineHeight: 1.05, letterSpacing: '-0.02em', mb: 0.4 }}>
+                Hello, I&apos;m
+              </Typography>
+              <Typography variant="h1" sx={{ fontFamily: 'var(--font-serif)', fontSize: { xs: '2.8rem', sm: '3.7rem', lg: '5.8rem' }, lineHeight: 0.95, letterSpacing: '-0.02em', mb: 1.4, fontStyle: 'italic', fontWeight: 700 }}>
+                ADILA TASNIM
+              </Typography>
+              <Typography sx={{ fontFamily: 'var(--font-serif)', fontSize: { xs: '1.6rem', sm: '2rem', lg: '2.6rem' }, lineHeight: 1.05, letterSpacing: '-0.02em', mb: 2, color: 'var(--fg)' }}>
+                I build warm, precise digital stories.
+              </Typography>
+              <Typography sx={{ fontSize: { xs: '1.1rem', md: '1.35rem' }, color: 'var(--fg)', fontWeight: 500, mb: 2 }}>
+                I&apos;m a <span className="shimmer-text">{typedText}</span>
+                <Box component="span" sx={{ ml: 0.5, color: 'var(--accent)' }}>|</Box>
+              </Typography>
+              <Typography sx={{ color: 'var(--muted)', lineHeight: 1.7, maxWidth: 620, fontSize: '1rem' }}>
+                I shape strategy, content, and design into a calm, editorial experience that helps brands feel clearer, bolder, and easier to remember.
+              </Typography>
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 3 }}>
+                <Button href="#contact" sx={{ borderRadius: '999px', background: 'linear-gradient(135deg, var(--accent), var(--accent-glow))', color: 'var(--bg)', px: 3, py: 1.2, textTransform: 'none', fontWeight: 700, boxShadow: 'var(--glow-shadow)' }}>
+                  Start a project
                 </Button>
-              ))}
-            </Stack>
-          </Box>
-
-          <Box className="hero-visual">
-            <Box className="orb orb-one" />
-            <Box className="orb orb-two" />
-            <Box className="hero-card">
-              <Box component="img" src="/Adila.webp" alt="Adila Tasnim" className="profile-image" />
-              <Box className="hero-card-copy">
-                <Typography variant="overline" className="eyebrow">Core focus</Typography>
-                <Typography variant="h6">{developer.role}</Typography>
-                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 1 }}>
-                  {developer.skills.map((skill) => (
-                    <Chip key={skill} label={skill} className="skill-chip small" />
-                  ))}
-                </Stack>
-                <Button className="inline-link" href="#about" sx={{ mt: 2 }}>
-                  Explore my approach <ArrowOutward fontSize="small" />
+                <Button href="#projects" sx={{ borderRadius: '999px', border: '1px solid var(--border)', color: 'var(--fg)', px: 3, py: 1.2, textTransform: 'none' }}>
+                  See recent work
                 </Button>
+              </Stack>
+            </Box>
+
+            <Box sx={{ position: 'relative', minHeight: { xs: 280, md: 360 } }}>
+              <Box sx={{ position: 'absolute', inset: 0, borderRadius: '28px', background: 'linear-gradient(135deg, var(--accent), var(--accent-glow))', opacity: 0.18 }} />
+              <Box sx={{ position: 'absolute', inset: 0, borderRadius: '28px', border: '1px solid var(--border)', background: 'var(--card)', boxShadow: 'var(--glow-shadow)' }} />
+              <Box sx={{ position: 'absolute', inset: '12%', borderRadius: '24px', background: 'radial-gradient(circle at top, oklch(0.62 0.16 45 / 0.12), transparent 70%)', filter: 'blur(16px)' }} />
+              <Box sx={{ position: 'absolute', inset: '10%', borderRadius: '24px', border: '1px solid var(--border)', overflow: 'hidden', background: 'linear-gradient(145deg, var(--card), var(--surface))' }}>
+                <Box component="img" src="/Adila.webp" alt="Adila portrait" sx={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.92 }} />
+                <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 0%, oklch(0.62 0.16 45 / 0.08) 100%)' }} />
               </Box>
             </Box>
           </Box>
         </Box>
 
-        <Box id="about" data-section className="section-card reveal">
-          <Typography variant="overline" className="section-tag">
-            About me
-          </Typography>
-          <Typography variant="h2" className="section-title large">
-            A marketer who blends strategy, storytelling, and technology to create measurable growth.
-          </Typography>
-          <Box className="about-grid">
-            <Box>
-              <Typography variant="body1" className="section-copy">
-                I’m a passionate Digital Marketer specializing in SEO, content strategy, digital growth, conversion optimization, and data-driven marketing. My Computer Science background gives me a unique advantage in connecting technology with marketing to create measurable business impact.
-              </Typography>
-              <Typography variant="body1" className="section-copy" sx={{ mt: 2 }}>
-                I focus on building clear, conversion-oriented marketing systems that turn audience attention into meaningful action, combining user psychology, creative storytelling, and data-led decision making.
-              </Typography>
-            </Box>
-            <Stack spacing={1.5} className="stats-grid">
-              {stats.map((stat) => (
-                <Card key={stat.label} className="stat-card">
-                  <Typography variant="h4" className="stat-value">
-                    <AnimatedCounter end={stat.value} suffix={stat.suffix} />
-                  </Typography>
-                  <Typography variant="body2" className="stat-label">
-                    {stat.label}
-                  </Typography>
-                </Card>
-              ))}
-            </Stack>
-          </Box>
-        </Box>
-
-        <Box id="services" data-section className="section-card reveal">
-          <Typography variant="overline" className="section-tag">
-            Services
-          </Typography>
-          <Typography variant="h2" className="section-title large">
-            Premium digital marketing services designed for modern growth.
-          </Typography>
-          <Box className="services-grid">
-            {services.map((service) => (
-              <Card key={service.title} className="service-card">
-                <Box className="service-icon" sx={{ background: service.accent }}>
-                  {service.icon}
-                </Box>
-                <Typography variant="h6" className="service-title">
-                  {service.title}
-                </Typography>
-                <Typography variant="body2" className="section-copy">
-                  {service.description}
-                </Typography>
-              </Card>
+        <Box className="reveal" sx={{ mt: 4, overflow: 'hidden', border: '1px solid var(--border)', borderRadius: '999px', py: 2.5, background: 'oklch(0.96 0.005 80 / 0.9)' }}>
+          <Box className="marquee-track" sx={{ display: 'flex', gap: 6, whiteSpace: 'nowrap', width: '200%' }}>
+            {[...Array(2)].map((_, index) => (
+              <Box key={index} sx={{ display: 'flex', gap: 6 }}>
+                {['Strategy', 'Content', 'SEO', 'Design', 'Analytics', 'Storytelling'].map((label) => (
+                  <Box key={label} sx={{ px: 3, py: 1, borderRadius: '999px', border: '1px solid var(--border)', color: 'var(--muted)', fontWeight: 600 }}>
+                    {label}
+                  </Box>
+                ))}
+              </Box>
             ))}
           </Box>
         </Box>
 
-        <Box id="experience" data-section className="section-card reveal">
-          <Typography variant="overline" className="section-tag">
-            Experience
+        <Box id="about" data-section className="reveal" sx={{ mt: 4, display: 'grid', gap: 3, gridTemplateColumns: { xs: '1fr', lg: '1.1fr 0.9fr' } }}>
+          <Box sx={{ border: '1px solid var(--border)', borderRadius: '28px', p: { xs: 3, md: 4 }, background: 'linear-gradient(135deg, var(--card), var(--surface))', boxShadow: 'var(--glow-shadow)' }}>
+            <Typography sx={{ textTransform: 'uppercase', letterSpacing: '0.24em', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 700, mb: 2 }}>About</Typography>
+            <Typography variant="h3" sx={{ fontFamily: 'var(--font-serif)', fontSize: { xs: '2rem', md: '2.5rem' }, mb: 2, letterSpacing: '-0.02em' }}>
+              A thoughtful marketer with a sharp eye for design and a grounded feel for growth.
+            </Typography>
+            <Typography sx={{ color: 'var(--muted)', lineHeight: 1.8 }}>
+              I blend research, storytelling, and calm systems thinking to help brands find clearer voices and stronger audiences. My work leans editorial, strategic, and conversion-aware without losing warmth or personality.
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'grid', gap: 2 }}>
+            {stats.map((item) => (
+              <Box key={item.label} sx={{ border: '1px solid var(--border)', borderRadius: '22px', p: 3, background: 'var(--card)' }}>
+                <Typography sx={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', color: 'var(--accent)' }}>{item.value}</Typography>
+                <Typography sx={{ color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.16em', fontSize: '0.74rem', mt: 0.5 }}>{item.label}</Typography>
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
+        <Box id="services" data-section className="reveal" sx={{ mt: 4, border: '1px solid var(--border)', borderRadius: '28px', p: { xs: 3, md: 4 }, background: 'linear-gradient(135deg, var(--card), var(--surface))', boxShadow: 'var(--glow-shadow)' }}>
+          <Typography sx={{ textTransform: 'uppercase', letterSpacing: '0.24em', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 700, mb: 2 }}>Services</Typography>
+          <Typography variant="h3" sx={{ fontFamily: 'var(--font-serif)', fontSize: { xs: '2rem', md: '2.4rem' }, mb: 3, letterSpacing: '-0.02em' }}>
+            Focused support for brand, growth, and calm execution.
           </Typography>
-          <Typography variant="h2" className="section-title large">
-            Growth-minded experience shaped by education, strategy, and execution.
+          <Box sx={{ display: 'grid', gap: 2, gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' } }}>
+            {services.map((service) => (
+              <Box key={service.title} data-hover sx={{ position: 'relative', overflow: 'hidden', border: '1px solid var(--border)', borderRadius: '20px', p: 3, bgcolor: 'var(--card)', transition: 'transform 0.2s ease', '&:hover': { transform: 'translateY(-4px)' } }}>
+                <Box sx={{ width: 38, height: 38, borderRadius: '999px', display: 'grid', placeItems: 'center', bgcolor: 'oklch(0.62 0.16 45 / 0.12)', color: 'var(--accent)', mb: 2 }}>
+                  {service.icon}
+                </Box>
+                <Typography sx={{ fontWeight: 700, mb: 1 }}>{service.title}</Typography>
+                <Typography sx={{ color: 'var(--muted)', lineHeight: 1.7 }}>{service.description}</Typography>
+                <Box sx={{ position: 'absolute', left: 0, bottom: 0, height: '2px', width: '100%', transform: 'scaleX(0)', transformOrigin: 'left', background: 'linear-gradient(90deg, var(--accent), var(--accent-glow))', transition: 'transform 0.25s ease', '&:hover': { transform: 'scaleX(1)' } }} />
+              </Box>
+            ))}
+          </Box>
+        </Box>
+
+        <Box id="projects" data-section className="reveal" sx={{ mt: 4, border: '1px solid var(--border)', borderRadius: '28px', p: { xs: 3, md: 4 }, background: 'linear-gradient(135deg, var(--card), var(--surface))', boxShadow: 'var(--glow-shadow)' }}>
+          <Typography sx={{ textTransform: 'uppercase', letterSpacing: '0.24em', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 700, mb: 2 }}>Projects</Typography>
+          <Typography variant="h3" sx={{ fontFamily: 'var(--font-serif)', fontSize: { xs: '2rem', md: '2.4rem' }, mb: 3, letterSpacing: '-0.02em' }}>
+            Selected work that moved with clarity and pace.
           </Typography>
-          <Stack spacing={2} className="timeline-stack">
-            {experiences.map((item) => (
-              <Card key={item.title} className="timeline-card">
-                <Box className="timeline-dot" sx={{ background: item.color }} />
-                <Box className="timeline-icon" sx={{ background: item.color }}>
-                  {item.icon}
-                </Box>
-                <Box>
-                  <Typography variant="h6" className="service-title">
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" className="timeline-company">
-                    {item.company}
-                  </Typography>
-                  <Typography variant="body2" className="section-copy">
-                    {item.description}
-                  </Typography>
-                </Box>
-              </Card>
+          <Stack spacing={2}>
+            {projects.map((project, index) => (
+              <Box key={project.title} sx={{ position: 'relative', overflow: 'hidden', border: '1px solid var(--border)', borderRadius: '22px', p: 3, background: 'var(--card)', '&:hover': { transform: 'translateX(6px)', transition: 'transform 0.25s ease' } }}>
+                <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(90deg, transparent 0%, oklch(0.62 0.16 45 / 0.1) 50%, transparent 100%)', transform: 'translateX(-100%)', transition: 'transform 0.35s ease', '&:hover': { transform: 'translateX(100%)' } }} />
+                <Typography sx={{ color: 'var(--accent)', fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.2em', mb: 1 }}>0{index + 1}</Typography>
+                <Typography sx={{ fontWeight: 700, mb: 1 }}>{project.title}</Typography>
+                <Typography sx={{ color: 'var(--muted)', lineHeight: 1.7, mb: 1.5 }}>{project.summary}</Typography>
+                <Typography sx={{ color: 'var(--fg)' }}>{project.result}</Typography>
+              </Box>
             ))}
           </Stack>
         </Box>
 
-        <Box id="skills" data-section className="section-card reveal">
-          <Typography variant="overline" className="section-tag">
-            Skills
+        <Box id="contact" data-section className="reveal" sx={{ mt: 4, border: '1px solid var(--border)', borderRadius: '28px', p: { xs: 3, md: 4 }, background: 'linear-gradient(135deg, var(--card), var(--surface))', boxShadow: 'var(--glow-shadow)' }}>
+          <Typography sx={{ textTransform: 'uppercase', letterSpacing: '0.24em', color: 'var(--accent)', fontSize: '0.75rem', fontWeight: 700, mb: 2 }}>Contact</Typography>
+          <Typography variant="h3" className="shimmer-text" sx={{ fontFamily: 'var(--font-serif)', fontSize: { xs: '2rem', md: '2.8rem' }, mb: 3, letterSpacing: '-0.02em' }}>
+            Let&apos;s shape something memorable.
           </Typography>
-          <Typography variant="h2" className="section-title large">
-            A premium toolkit for strategy, content, and conversion.
-          </Typography>
-          <Box className="skills-grid">
-            {skillGroups.map((group) => (
-              <Card key={group.title} className="skill-card">
-                <Typography variant="h6" className="service-title">
-                  {group.title}
-                </Typography>
-                <Stack spacing={1.6} sx={{ mt: 2 }}>
-                  {group.items.map((item) => (
-                    <Box key={item.name}>
-                      <Box className="skill-meta">
-                        <Typography variant="body2">{item.name}</Typography>
-                        <Typography variant="body2">{item.level}%</Typography>
-                      </Box>
-                      <Box className="progress-track">
-                        <Box className="progress-fill" sx={{ width: `${item.level}%`, background: item.color }} />
-                      </Box>
-                    </Box>
-                  ))}
-                </Stack>
-              </Card>
-            ))}
-          </Box>
-        </Box>
-
-        <Box id="projects" data-section className="section-card reveal">
-          <Typography variant="overline" className="section-tag">
-            Projects
-          </Typography>
-          <Typography variant="h2" className="section-title large">
-            Results-driven work shaped by growth strategy and thoughtful design.
-          </Typography>
-          <Box className="projects-grid">
-            {projects.map((project) => (
-              <Card key={project.title} className="project-card">
-                <Box className="project-media" sx={{ background: project.gradient }}>
-                  <Box className="project-overlay">
-                    <Typography variant="overline">Case study</Typography>
-                    <Typography variant="h6">{project.title}</Typography>
-                  </Box>
-                </Box>
-                <Box className="project-body">
-                  <Typography variant="h6" className="service-title">
-                    {project.title}
-                  </Typography>
-                  <Typography variant="body2" className="section-copy" sx={{ mt: 1 }}>
-                    {project.summary}
-                  </Typography>
-                  <Typography variant="body2" className="project-result">
-                    {project.result}
-                  </Typography>
-                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap sx={{ mt: 1.5 }}>
-                    {project.tools.map((tool) => (
-                      <Chip key={tool} label={tool} className="skill-chip small" />
-                    ))}
-                  </Stack>
-                  <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5} sx={{ mt: 2 }}>
-                    <Button className="primary-btn" href="#contact">
-                      Let&apos;s talk
-                    </Button>
-                    <Button className="secondary-btn" href="#about">
-                      View approach
-                    </Button>
-                  </Stack>
-                </Box>
-              </Card>
-            ))}
-          </Box>
-        </Box>
-
-        <Box id="contact" data-section className="section-card reveal">
-          <Typography variant="overline" className="section-tag">
-            Contact
-          </Typography>
-          <Typography variant="h2" className="section-title large">
-            Let&apos;s build a marketing experience that feels as refined as the brand behind it.
-          </Typography>
-          <Box className="contact-grid">
-            <Box className="contact-list">
+          <Stack direction={{ xs: 'column', md: 'row' }} spacing={2}>
+            <Stack spacing={1.5} sx={{ flex: 1 }}>
               {contactInfo.map((item) => (
-                <Button key={item.text} href={item.href} startIcon={item.icon} className="contact-link" component="a" target="_blank" rel="noreferrer">
-                  {item.text}
+                <Button key={item.label} href={item.href} target="_blank" rel="noreferrer" sx={{ justifyContent: 'flex-start', borderRadius: '999px', border: '1px solid var(--border)', color: 'var(--fg)', px: 2.5, py: 1.2, textTransform: 'none' }}>
+                  <Box sx={{ mr: 1.5 }}>{item.icon}</Box>
+                  {item.label}
                 </Button>
               ))}
-            </Box>
-            <Box component="form" className="contact-form">
-              <TextField label="Name" variant="outlined" className="form-field" />
-              <TextField label="Email" variant="outlined" className="form-field" />
-              <TextField label="Message" variant="outlined" multiline rows={4} className="form-field" />
-              <Button type="submit" variant="contained" className="primary-btn">
-                Send message
+            </Stack>
+            <Box sx={{ flex: 1, border: '1px solid var(--border)', borderRadius: '22px', p: 3, background: 'var(--card)' }}>
+              <Typography sx={{ color: 'var(--muted)', lineHeight: 1.8 }}>
+                If you need a refined launch, a sharp content system, or a more composed digital presence, I’d love to hear what you’re building.
+              </Typography>
+              <Button href="mailto:adila@hindukushsoft.com" sx={{ mt: 2, borderRadius: '999px', background: 'linear-gradient(135deg, var(--accent), var(--accent-glow))', color: 'var(--bg)', px: 3, py: 1.2, textTransform: 'none', fontWeight: 700 }}>
+                Email me directly
               </Button>
             </Box>
-          </Box>
-        </Box>
-
-        <Box className="footer-card reveal">
-          <Typography variant="body2" className="section-copy">
-            © 2026 Adila Tasnim • Building thoughtful marketing experiences.
-          </Typography>
-          <Button className="back-to-top" href="#home">
-            <KeyboardArrowUp />
-          </Button>
+          </Stack>
         </Box>
       </Box>
     </Box>
   );
-};
-
-const AnimatedCounter: React.FC<{ end: number; suffix?: string }> = ({ end, suffix = '' }) => {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    let frameId: number;
-    let startTime: number | null = null;
-
-    const step = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / 1200, 1);
-      setValue(Math.round(progress * end));
-      if (progress < 1) {
-        frameId = window.requestAnimationFrame(step);
-      }
-    };
-
-    frameId = window.requestAnimationFrame(step);
-    return () => window.cancelAnimationFrame(frameId);
-  }, [end]);
-
-  return <>{value}{suffix}</>;
 };
 
 export default Portfolio;
