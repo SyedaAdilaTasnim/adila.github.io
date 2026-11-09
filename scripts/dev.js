@@ -15,3 +15,4 @@ const vite = spawn('npx', ['vite'], {
 vite.on('exit', (code) => {
   process.exit(code ?? 0);
 });
+
