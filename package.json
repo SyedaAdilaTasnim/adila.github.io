@@ -5,8 +5,9 @@
   "type": "module",
   "homepage": "https://syedaadilatasnim.github.io/adila.github.io",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "dev": "node scripts/dev.js",
+    "build": "node scripts/build.js",
+    "build:vite": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
